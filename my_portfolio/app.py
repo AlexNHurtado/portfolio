@@ -3,7 +3,7 @@ This Flask application serves as a personal portfolio website with the following
 - Display skills, languages, experiences, projects, and personal information.
 - User authentication and authorization using Flask-Login.
 - Admin interface to manage skills, languages, experiences, projects, and personal information.
-Routes:
+Routes: v3njhK9GV6zBfCb
 - /: Home page displaying skills, languages, and experiences.
 - /projects: Page displaying projects.
 - /about: Page displaying personal information.
@@ -49,8 +49,16 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 from sqlalchemy import inspect
 
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost:5432/postgres'
+# app.config['SECRET_KEY'] = 'secret_key'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = SQLAlchemy(app)
+# login_manager = LoginManager(app)
+# login_manager.init_app(app)
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost:5432/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://AlexHurtado:v3njhK9GV6zBfCb@AlexHurtado.mysql.pythonanywhere-services.com/default'
 app.config['SECRET_KEY'] = 'secret_key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
