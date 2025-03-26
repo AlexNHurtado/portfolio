@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='w3.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='w3-theme-red.css') }}">
+    <title>Document</title>
+</head>
+
+<body class="w3-theme-l5">
+    <div class="topnav">
+        <a class="{% if request.path == url_for('index') %}w3-theme-dark{% endif %}" href="{{url_for('index')}}">Home</a>
+        <a class="{% if request.path == url_for('projects') %}w3-theme-dark{% endif %}"
+            href="{{url_for('projects')}}">Projects</a>
+        <a class="{% if request.path == url_for('contact') %}w3-theme-dark{% endif %}"
+            href="{{url_for('contact')}}">Contact</a>
+        <a class="{% if request.path == url_for('about') %}w3-theme-dark{% endif %}" href="{{url_for('about')}}">About</a>
+        {% if current_user.is_authenticated %}
+        <a class="{% if request.path == url_for('logout') %}w3-theme-dark{% endif %}" href="{{url_for('logout')}}">Logout</a>
+        <a class="{% if request.path == url_for('admin_skills') %}w3-theme-light{% endif %}" href="{{url_for('admin_skills')}}">Admin</a>
+        {% else %}
+        <a onclick="document.getElementById('modal_login').style.display='block'" class="{% if request.path == url_for('login') %}active{% endif %}" href="#">Login</a>
+        <div id="modal_login" class="w3-modal ">
+            <div class="w3-modal-content w3-animate-top w3-padding w3-card-4 w3-theme-dark" style="max-width: 400px;">
+
+                    <span onclick="document.getElementById('modal_login').style.display='none'"
+                        class="w3-button w3-display-topright w3-theme">&times;</span>
+                    {% include 'login.html' %}
+
+            </div>
+        </div>
+        {% endif %}
+        
+    </div>
+    {% if message %}
+    <div id="message" class="w3-green w3-animate-right">
+        {{ message }}
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageDiv = document.getElementById("message");
+            messageDiv.style.display = "block";
+            setTimeout(function() {
+                messageDiv.classList.add("w3-hide");
+            }, 10000);
+        });
+    </script>
+    {% endif %}
+
+    <header class="w3-container w3-theme w3-padding" id="myHeader">
+        <div class="w3-center">
+            <h4>Welcome to my Portfolio</h4>
+            <h1 class="w3-xxxlarge w3-animate-left">Alejandro Hurtado</h1>
+        </div>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+</body>
+
+</html>

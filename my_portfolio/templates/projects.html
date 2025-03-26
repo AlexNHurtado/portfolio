@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="w3-container w3-blue-gray">
+  <h2>My Projects</h2>
+</header>
+
+
+
+{% for project, details in my_projects.items() %}
+<div class="w3-panel w3-card w3-display-container w3-animate-right " style="background-image: linear-gradient(to right, white 40%, rgb(255, 98, 98));">
+  <p class="w3-text-blue"><b>{{ details.name }}</b></p>
+
+  <i class="fa fa-desktop w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+  <p>{{ details.description }}</p>
+  <p>Technologies: {{ details.technologies | join(', ') }}</p>
+  <a href="{{ details.link }}" class="w3-button w3-theme">View Project</a>
+
+</div>
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if current_user.is_authenticated %}
+{% include 'admin-nav.html' %}
+
+<div class="w3-container w3-content">
+
+    <div class="w3-panel w3-white w3-card w3-display-container w3-padding"style='max-width: 400px;'>
+        <form class="w3-container" action="{{ url_for('add_language') }}" method="post">
+            <p class="w3-opacity"><b>Add New Language</b></p>
+            <span class="w3-display-topright w3-padding"><button type="submit"
+                class="w3-button w3-green w3-card-4">Add</button></span>
+                
+            <input class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="language_name" placeholder="New Language" required>
+        </form>
+    </div>
+</div>
+
+<div class="w3-container w3-content">
+    <p class="w3-opacity"><b>Delete Language</b></p>
+
+    {% for language in languages %}
+    <div class="w3-panel w3-white w3-card w3-display-container" style="width: 500px;">
+        <form action="{{ url_for('delete_language', language=language) }}" method="post">
+            <span class="w3-display-topright w3-padding"><button type="submit"
+                    class="w3-button w3-circle w3-red w3-card-4">-</button></span>
+                <input type="hidden" name="index" value="{{ loop.index0 }}">
+            <p class="w3-text-blue"><b>{{ language }}</b></p>
+
+        </form>
+        <button class="w3-button w3-padding w3-theme-dark">Edit</button>
+        <script>
+            document.querySelectorAll('.w3-button.w3-padding.w3-theme-dark').forEach(button => {
+                button.addEventListener('click', function () {
+                    const panel = this.closest('.w3-panel');
+                    const language = panel.querySelector('p.w3-text-blue b').innerText;
+
+
+                    panel.querySelector('p.w3-text-blue').innerHTML = `<input type="hidden" name="index" value="{{ loop.index0 }}"><input class="w3-input w3-border"  type="text" name="language_name" value="${language}" required>`;
+
+                    this.innerText = 'Update';
+                    this.classList.remove('w3-theme-dark');
+                    this.classList.add('w3-green');
+                    this.addEventListener('click', function () {
+                        panel.querySelector('form').action = "{{ url_for('update_language') }}";
+                        panel.querySelector('form').submit();
+                    });
+                });
+            });
+
+        </script>
+
+    </div>
+    {% endfor %}
+
+
+</div>
+{% else %}
+<h1>Admin</h1>
+<p>You are not logged in</p>
+{% endif %}
+{% endblock %}

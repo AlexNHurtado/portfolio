@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if current_user.is_authenticated %}
+{% include 'admin-nav.html' %}
+
+<div class="w3-container w3-content">
+
+    <div class="w3-panel w3-white w3-card w3-display-container w3-padding" style='max-width: 400px;'>
+        <form class="w3-container" action="{{ url_for('add_experience') }}" method="post">
+            <p class="w3-opacity"><b>Add New Experience</b></p>
+            <span class="w3-display-topright w3-padding"><button type="submit"
+                    class="w3-button w3-green w3-card-4">Add</button></span>
+
+            <input class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="experience_title"
+                placeholder="Title" required>
+            <input class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="experience_company"
+                placeholder="Company" required>
+            <input class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="experience_position"
+                placeholder="Position" required>
+            <label for="start">Start Date:</label>
+            <input id="start" class="w3-input w3-border w3-margin-top w3-margin-bottom" type="date"
+                name="experience_start_date" required>
+            <label for="end">End Date:</label>
+            <span class="w3-margin-left"><input type="checkbox" onchange="toggleEndDate(this)"
+                    name="experience_end_date" value="Present"></span>
+            <label for="current">Current</label>
+            <input id="end" class="w3-input w3-border w3-margin-top w3-margin-bottom" type="date"
+                name="experience_end_date">
+
+
+            <script>
+                function toggleEndDate(checkbox) {
+                    var endDateInput = document.getElementById('end');
+                    if (checkbox.checked) {
+                        endDateInput.disabled = true;
+                        endDateInput.value = '';
+                    } else {
+                        endDateInput.disabled = false;
+                    }
+                }
+            </script>
+            <textarea class="w3-input w3-border w3-margin-bottom" name="experience_description"
+                placeholder="Description"></textarea>
+        </form>
+    </div>
+</div>
+
+<div class="w3-container w3-content">
+    <p class="w3-opacity"><b>Delete Experience</b></p>
+
+    {% for exp, details in experience.items() %}
+    <div class="w3-panel w3-white w3-card w3-display-container" style="width: 500px;">
+        <form action="{{ url_for('delete_experience') }}" method="post">
+            <span class="w3-display-topright w3-padding"><button type="submit"
+                    class="w3-button w3-circle w3-red w3-card-4">-</button></span>
+                    <input type="hidden" name="old_experience_title" value="{{exp}}">
+            <p class="w3-text-blue"><b>{{ exp }}</b></p>
+            {% for detail in details %}
+            <p class="w3-margin-left w3-hover-light-grey"><b>{{ detail }}</b> : <i>{{details[detail]}}</i></p>
+            {% endfor %}
+        </form>
+        <button class="w3-button w3-padding w3-theme-dark">Edit</button>
+        <script>
+            document.querySelectorAll('.w3-button.w3-padding.w3-theme-dark').forEach(button => {
+                button.addEventListener('click', function () {
+                    const form = this.previousElementSibling;
+                    const title = form.querySelector('p.w3-text-blue b').innerText;
+                    const details = form.querySelectorAll('p.w3-margin-left');
+        
+                    form.querySelector('p.w3-text-blue').innerHTML = `<input type="text" name="experience_title" value="${title}" class="w3-input w3-border">`;
+        
+                    details.forEach(detail => {
+                        const key = detail.querySelector('b').innerText;
+                        const value = detail.querySelector('i').innerText;
+                        detail.innerHTML = `<b>${key}</b> : <input type="text" name="${key}" value="${value}" class="w3-input w3-border">`;
+                    });
+        
+                    this.innerText = 'Update';
+                    this.classList.remove('w3-theme-dark');
+                    this.classList.add('w3-green');
+                    this.type = 'submit';
+                    this.addEventListener('click', function () {
+                        form.action = "{{ url_for('update_experience') }}";
+                        form.submit();
+                    });
+                });
+            });
+        </script>
+
+    </div>
+    {% endfor %}
+
+
+</div>
+
+{% else %}
+<h1>Admin</h1>
+<p>You are not logged in</p>
+{% endif %}
+{% endblock %}

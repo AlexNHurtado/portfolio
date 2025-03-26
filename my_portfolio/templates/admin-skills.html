@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if current_user.is_authenticated %}
+
+{% include 'admin-nav.html' %}
+
+
+<div class="w3-container w3-content">
+
+    <div class="w3-panel w3-white w3-card w3-display-container w3-padding"style='max-width: 400px;'>
+        <form class="w3-container" action="{{ url_for('add_skill') }}" method="post">
+            <p class="w3-opacity"><b>Add New SKill</b></p>
+            <span class="w3-display-topright w3-padding"><button type="submit"
+                class="w3-button w3-green w3-card-4">Add</button></span>
+                
+            <input class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="skill_name" placeholder="New skill">
+            <textarea class="w3-input w3-border w3-margin-bottom" name="skill_details" placeholder="Details"></textarea>
+        </form>
+    </div>
+</div>
+
+<div class="w3-container w3-content">
+    <p class="w3-opacity"><b>Delete Skill</b></p>
+
+    {% for skill, details in skills.items() %}
+    <div class="w3-panel w3-white w3-card w3-display-container" style="width: 500px;">
+        <form action="{{ url_for('delete_skill', skill=skill) }}" method="post">
+            <span class="w3-display-topright w3-padding"><button type="submit"
+                    class="w3-button w3-circle w3-red w3-card-4">-</button></span>
+
+            <p class="w3-text-blue"><b>{{ skill }}</b></p>
+            {% for detail in details %}
+            <p class="w3-margin-left w3-hover-light-grey">{{ detail }}</p>
+            {% endfor %}
+        </form>
+        <button class="w3-button w3-padding w3-theme-dark">Edit</button>
+        <script>
+            document.querySelectorAll('.w3-button.w3-padding.w3-theme-dark').forEach(button => {
+                button.addEventListener('click', function () {
+                    const panel = this.closest('.w3-panel');
+                    const skill = panel.querySelector('p.w3-text-blue b').innerText;
+                    const details = panel.querySelectorAll('p:not(.w3-text-blue)');
+
+                    panel.querySelector('p.w3-text-blue').innerHTML = `<input class="w3-input w3-border"  type="text" name="skill_name" value="${skill}">`;
+                    details.forEach(detail => {
+                        detail.innerHTML = `<b>-</b><input class="w3-input w3-margin-left w3-border" type="text" name="skill_details" value="${detail.innerText}">`;
+                    });
+
+                    this.innerText = 'Update';
+                    this.classList.remove('w3-theme-dark');
+                    this.classList.add('w3-green');
+                    this.addEventListener('click', function () {
+                        panel.querySelector('form').action = "{{ url_for('update_skill') }}";
+                        panel.querySelector('form').submit();
+                    });
+                });
+            });
+
+        </script>
+
+    </div>
+    {% endfor %}
+
+
+</div>
+
+{% else %}
+<h1>Admin</h1>
+<p>You are not logged in</p>
+{% endif %}
+{% endblock %}

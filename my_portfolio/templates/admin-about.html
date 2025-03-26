@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if current_user.is_authenticated %}
+{% include 'admin-nav.html' %}
+
+<div class="w3-container w3-content w3-padding-32" style="max-width:800px">
+    <header class="w3-container w3-blue-gray w3-center w3-padding-32">
+        <h2>About Me</h2>
+    </header>
+
+    <div class="w3-card-4 w3-margin w3-white">
+        <div class="w3-container w3-padding-16">
+            <form method="POST" action="{{ url_for('update_about') }}" >
+            <label><strong>Name:</strong></label>
+            <input type="text" name="name" value="{{ about_me.name }}" class="w3-input">
+            <label><strong>Age:</strong></label>
+            <input type="number" name="age" value="{{ about_me.age }}" class="w3-input">
+            <label><strong>University:</strong></label>
+            <input type="text" name="university" value="{{ about_me.university }}" class="w3-input">
+            <label><strong>Degree:</strong></label>
+            <input type="text" name="degree" value="{{ about_me.degree }}" class="w3-input">
+            <label><strong>Year:</strong></label>
+            <input type="text" name="year" value="{{ about_me.year }}" class="w3-input">
+            <label><strong>Bio:</strong></label>
+            <textarea name="bio" class="w3-input">{{ about_me.bio }}</textarea>
+            <label><strong>Hobbies:</strong></label>
+            <input type="text" name="hobbies" value="{{ about_me.hobbies | join(', ') }}" class="w3-input">
+            <label><strong>Goals:</strong></label>
+            <textarea name="goals" class="w3-input">{{ about_me.goals }}</textarea>
+        </div>
+
+        <div class="w3-container w3-padding-16">
+            <h3>Contact</h3>
+            <label><strong>Email:</strong></label>
+            <input type="email" name="email" value="{{ about_me.contact.email }}" class="w3-input">
+            <label><strong>Phone:</strong></label>
+            <input type="tel" name="phone" value="{{ about_me.contact.phone }}" class="w3-input">
+            <label><strong>LinkedIn:</strong></label>
+            <input type="url" name="linkedin" value="{{ about_me.contact.linkedin }}" class="w3-input">
+            <label><strong>GitHub:</strong></label>
+            <input type="url" name="github" value="{{ about_me.contact.github }}" class="w3-input">
+        </div>
+        <button class="w3-button w3-padding w3-theme-dark">Update</button>
+    </form>
+    </div>
+
+</div>
+
+
+
+
+{% else %}
+<h1>Admin</h1>
+<p>You are not logged in</p>
+{% endif %}
+{% endblock %}

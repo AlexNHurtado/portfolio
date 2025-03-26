@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="w3-container w3-content w3-padding-32" style="max-width:800px">
+    <header class="w3-container w3-blue-gray w3-center w3-padding-32">
+        <h2>About Me</h2>
+    </header>
+
+    <div class="w3-card-4 w3-margin w3-white">
+        <div class="w3-container w3-padding-16">
+            <p><strong>Name:</strong> {{ about_me.name }}</p>
+            <p><strong>Age:</strong> {{ about_me.age }}</p>
+            <p><strong>University:</strong> {{ about_me.university }}</p>
+            <p><strong>Degree:</strong> {{ about_me.degree }}</p>
+            <p><strong>Year:</strong> {{ about_me.year }}</p>
+            <p><strong>Bio:</strong> {{ about_me.bio }}</p>
+            <p><strong>Hobbies:</strong> {{ about_me.hobbies | join(', ') }}</p>
+            <p><strong>Goals:</strong> {{ about_me.goals }}</p>
+        </div>
+    </div>
+
+    <div class="w3-card-4 w3-margin w3-white">
+        <div class="w3-container w3-padding-16">
+            <h3>Contact</h3>
+            <p><strong>Email:</strong> <a href="mailto:{{ about_me.contact.email }}">{{ about_me.contact.email }}</a></p>
+            <p><strong>Phone:</strong> {{ about_me.contact.phone }}</p>
+            <p><strong>LinkedIn:</strong> <a href="{{ about_me.contact.linkedin }}" target="_blank">{{ about_me.contact.linkedin }}</a></p>
+            <p><strong>GitHub:</strong> <a href="{{ about_me.contact.github }}" target="_blank">{{ about_me.contact.github }}</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="w3-container w3-theme-dark">
+  <h2>My Skills</h2>
+</header>
+
+<div class="w3-row-padding w3-center w3-margin-top w3-margin-bottom">
+
+  {% for skill, details in skills.items() %}
+  <div class="w3-third">
+    <div class="w3-card w3-container {% if loop.index0 % 2 == 0 %}w3-theme w3-hover-orange{% else %}w3-white w3-hover-pale-green{% endif %} w3-margin-bottom"
+      style="min-height:360px">
+      <h3 class=" {% if loop.index0 % 2 == 0 %}w3-theme-dark{% else %}w3-blue-gray{% endif %}">{{ skill }}</h3><br>
+      <i class="fa fa-desktop w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+      {% for detail in details %}
+      <p>{{ detail }}</p>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<header class="w3-container w3-blue-gray">
+  <h2>My Languages</h2>
+</header>
+
+<div class="w3-row-padding w3-center w3-margin-top w3-margin-bottom">
+
+  {% for language in languages %}
+  <div class="w3-third">
+    <div class="w3-card w3-container w3-card-4 {% if loop.index0 % 2 == 0 %}w3-theme{% else %}w3-white{% endif %} w3-margin-bottom"
+      style="min-height:60px">
+      <h3>{{ language }}</h3><br>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<header class="w3-container w3-blue-gray">
+  <h2>My Experience</h2>
+</header>
+
+<div class="w3-row-padding w3-center w3-margin-top w3-margin-bottom">
+
+  {% for exp, details in experience.items() %}
+  <div class="w3-third">
+    <div class="w3-card w3-container w3-card-4 {% if loop.index0 % 2 == 0 %}w3-red{% else %}w3-white{% endif %} w3-margin-bottom"
+      style="min-height:60px">
+      <h3 style="text-transform: capitalize;">{{ exp }}</h3><br>
+      <i class="fa fa-desktop w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+      {% for detail in details %}
+      <p style="text-transform: capitalize;">{{ detail }} : {{details[detail]}}</p>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<footer class="w3-container w3-blue-gray">
+  <h5>Alejandro Hurtado</h5>
+  <p class="w3-opacity">Web Design UTCH BIS</p>
+</footer>
+{% endblock %}

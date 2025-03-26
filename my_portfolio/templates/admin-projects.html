@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if current_user.is_authenticated %}
+{% include 'admin-nav.html' %}
+
+
+<div class="w3-container w3-content">
+
+    <div class="w3-panel w3-white w3-card w3-display-container w3-padding" style='max-width: 400px;'>
+        <form class="w3-container" action="{{ url_for('add_project') }}" method="post">
+            <p class="w3-opacity"><b>Add New Project</b></p>
+            <span class="w3-display-topright w3-padding"><button type="submit"
+                    class="w3-button w3-green w3-card-4">Add</button></span>
+            <input class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="project_name"
+                placeholder="Project Name" required>
+            <textarea class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="project_description"
+                placeholder="Description" required></textarea>
+            <input class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="project_tech"
+                placeholder="Technologies" required>
+            <input class="w3-input w3-border w3-margin-top w3-margin-bottom" type="text" name="project_link"
+                placeholder="Link to Project" required>
+        </form>
+    </div>
+</div>
+
+<div class="w3-container w3-content">
+    <p class="w3-opacity"><b>Delete Project</b></p>
+
+    {% for project, details in projects.items() %}
+    <div class="w3-panel w3-white w3-card w3-display-container" style="width: 500px;">
+        <form action="{{ url_for('delete_project') }}" method="post">
+            <span class="w3-display-topright w3-padding"><button type="submit"
+                    class="w3-button w3-circle w3-red w3-card-4">-</button></span>
+            <input type="hidden" name="old_project_name" value="{{project}}">
+            <p id="name" class="w3-text-blue"><b>{{ project }}</b></p>
+            <p id="desc">{{ details.description }}</p>
+            <p id="tech">Technologies: {{ details.technologies | join(', ') }}</p>
+            <p id="link">{{ details.link }}</p>
+
+        </form>
+        <button class="w3-button w3-padding w3-theme-dark">Edit</button>
+        <script>
+            document.querySelectorAll('.w3-button.w3-padding.w3-theme-dark').forEach(button => {
+                button.addEventListener('click', function () {
+                    const panel = this.closest('.w3-panel');
+                    const name = panel.querySelector('p#name b').innerText.trim();
+                    const desc = panel.querySelector('p#desc').innerText.trim();
+                    const tech = panel.querySelector('p#tech').innerText.replace('Technologies: ', '').trim();
+                    const link = panel.querySelector('p#link').innerText.trim();
+        
+                    panel.querySelector('p#name').innerHTML = `<input class="w3-input w3-border" type="text" name="project_name" value="${name}">`;
+                    panel.querySelector('p#desc').innerHTML = `<textarea class="w3-input w3-border" name="project_description">${desc}</textarea>`;
+                    panel.querySelector('p#tech').innerHTML = `<input class="w3-input w3-border" type="text" name="project_tech" value="${tech}">`;
+                    panel.querySelector('p#link').innerHTML = `<input class="w3-input w3-border" type="text" name="project_link" value="${link}">`;
+        
+                    this.innerText = 'Update';
+                    this.classList.remove('w3-theme-dark');
+                    this.classList.add('w3-green');
+                    this.addEventListener('click', function () {
+                        panel.querySelector('form').action = "{{ url_for('update_project') }}";
+                        panel.querySelector('form').submit();
+                    });
+                });
+            });
+        </script>
+
+    </div>
+    {% endfor %}
+
+
+</div>
+
+
+
+
+{% else %}
+<h1>Admin</h1>
+<p>You are not logged in</p>
+{% endif %}
+{% endblock %}
